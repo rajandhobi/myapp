@@ -2,7 +2,7 @@ require 'test_helper'
 
 class CityPolicyTest < ActiveSupport::TestCase
   def test_scope
-  end
+  end 
 
   def test_show
   end
