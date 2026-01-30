@@ -1,0 +1,25 @@
+[33mtag ksdjdn[m
+Tagger: Harshil <harshilghadiya1312@gmail.com>
+Date:   Fri Jan 30 15:58:31 2026 +0530
+
+SSDD
+
+[33mcommit 512e906eab9dcccbceff14a8a88905f2823672b1[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;33mtag: s[m[33m, [m[1;33mtag: ksdjdn[m[33m)[m
+Author: Harshil <harshilghadiya1312@gmail.com>
+Date:   Fri Jan 30 15:45:36 2026 +0530
+
+    hii
+
+[1mdiff --git a/test/policies/city_policy_test.rb b/test/policies/city_policy_test.rb[m
+[1mindex 9818a73..eddb777 100644[m
+[1m--- a/test/policies/city_policy_test.rb[m
+[1m+++ b/test/policies/city_policy_test.rb[m
+[36m@@ -2,7 +2,7 @@[m [mrequire 'test_helper'[m
+ [m
+ class CityPolicyTest < ActiveSupport::TestCase[m
+   def test_scope[m
+[31m-  end[m
+[32m+[m[32m  end[m[41m [m
+ [m
+   def test_show[m
+   end[m

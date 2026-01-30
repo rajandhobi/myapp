@@ -4,7 +4,6 @@ class City < ApplicationRecord
 has_one_attached :logo do |attachable|
     attachable.variant :thumb, resize_to_limit: [100, 100]
 end
-
 has_one_attached :video_tour do |attachable|
   attachable.variant :thumb, resize_to_limit: [100, 100], preprocessed: true
 end
