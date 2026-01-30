@@ -1,0 +1,9 @@
+<%# locals: (place:, show_count: false) %>
+
+<div class="place-box">
+  <h3> <%= place.name %> (from _place1.html.erb) </h3>
+
+  <% if show_count %>
+    <p>Total Places in City: <%= place.city.places.count %></p>
+  <% end %>
+</div>

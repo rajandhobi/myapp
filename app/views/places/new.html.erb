@@ -1,0 +1,40 @@
+<%= form_with model: @place, builder: LabellingFormBuilder do |form| %>
+<div class="mb-3">
+  <%= form.text_field :name %>
+  <%= form.text_field :category %>
+  <%= form.select :city_id, City.all.map { |c| [c.name, c.id] } %>
+<div>
+  
+ <%= form.label :city_id, "Select City" %>
+    
+ <%= form.select :city_id, City.order("LOWER(name)").map { |city| [city.name, city.id] } %>
+
+<%= form.collection_radio_buttons :city_id, City.order("LOWER(name)"), :id, :name %>
+
+<%= form.collection_checkboxes :city_id, City.order("LOWER(name)"), :id, :name %>
+
+</div>
+
+<div>
+  <%= form.label :visited_on, "Visit Date" %>
+  <%= form.date_select :visited_on %>
+</div>
+  <%= form.submit "Create Place" %>
+<% end %>
+
+
+<h3>Select Time Zone</h3>
+
+<%= form_with model: @place do |form| %>
+
+  <%= form.label :time_zone %>
+  <%= form.time_zone_select :time_zone %>
+
+
+  <%= form.submit %>
+<% end %>
+
+
+
+
+

@@ -1,0 +1,21 @@
+<h1>New User</h1>
+
+<%= form_with model: @user do |form| %>
+  <div>
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+    <% if @user.errors[:name].any? %>
+      <small style="color:red;"><%= @user.errors[:name].first %></small>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.label :email %>
+    <%= form.text_field :email %>
+    <% if @user.errors[:email].any? %>
+      <small style="color:red;"><%= @user.errors[:email].first %></small>
+    <% end %>
+  </div>
+
+ <%= form.submit "Create User" %>
+<% end %>

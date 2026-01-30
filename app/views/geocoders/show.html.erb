@@ -1,0 +1,13 @@
+<h1>Geocoder</h1>
+
+<% if @geocoder.persisted? %>
+  <p>Latitude: <%= @geocoder.latitude %></p>
+  <p>Longitude: <%= @geocoder.longitude %></p>
+
+  <%= link_to "Edit", edit_geocoder_path %>
+  <%= button_to "Delete", geocoder_path, method: :delete,
+        data: { confirm: "Are you sure?" } %>
+<% else %>
+  <p>No geocoder data yet.</p>
+  <%= link_to "Add Geocoder", new_geocoder_path %>
+<% end %>

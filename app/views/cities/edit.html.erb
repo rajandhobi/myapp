@@ -1,0 +1,86 @@
+<turbo-frame id="city_sidebar_frame">
+  <script>
+    var myOffcanvas = document.getElementById('cityOffcanvas');
+    var bsOffcanvas = bootstrap.Offcanvas.getInstance(myOffcanvas) || new bootstrap.Offcanvas(myOffcanvas);
+    document.getElementById('sidebar_title').innerText = "Edit City: <%= @city.name %>";
+    bsOffcanvas.show();
+  </script>
+
+  <div class="p-2">
+    <%= form_with model: @city, url: city_path(@city), id: "ajax-city-form", method: :patch do |city_form| %>
+      <%= hidden_field_tag :page, params[:page] %>
+      <% if params[:q].present? %>
+        <% params[:q].to_unsafe_h.each do |key, value| %>
+          <%= hidden_field_tag "q[#{key}]", value %>
+        <% end %>
+      <% end %>
+
+      <div class="mb-3">
+        <%= city_form.label :name, "City Name", class: "form-label fw-bold" %>
+        <%= city_form.text_field :name, class: "form-control", required: true %>
+      </div>
+
+      <div class="mb-3">
+        <%= city_form.label :country, "City Country", class: "form-label fw-bold" %>
+        <%= city_form.text_field :country, class: "form-control", required: true %>
+      </div>
+
+      <div class="mb-3">
+        <%= city_form.label :logo, "City Image (Logo)", class: "form-label fw-bold" %>
+        <% if @city.logo.attached? %>
+          <div class="mb-2">
+            <%= city_form.hidden_field :logo, value: @city.logo.signed_id %>
+            <%= image_tag @city.logo, class: "img-thumbnail", style: "width: 150px; height: 150px; object-fit: cover;" %>
+          </div>
+        <% end %>
+        <%= city_form.file_field :logo, class: "form-control", accept: 'image/*', direct_upload: true %>
+      </div>
+
+      <div class="mb-3">      
+        <%= city_form.label :images, "Upload City Gallery (Multiple)", class: "form-label fw-bold" %>
+        
+        <% if @city.images.attached? %>
+          <div class="mb-2 d-flex flex-wrap gap-2">
+            <p class="small text-muted w-100 mb-1">Current Images:</p>
+
+            <% @city.images.each do |img| %>    
+              <%= city_form.hidden_field :images, multiple: true, value: img.signed_id %>
+              <% if img.content_type.start_with?('image/') %>
+                <%= image_tag img.variant(:thumb), class: "img-thumbnail", style: "width: 80px; height: 80px; object-fit: cover;" %>
+              <% else %>
+                <div class="img-thumbnail d-flex align-items-center justify-content-center bg-light" style="width: 80px; height: 80px;">
+                  📄 PDF
+                </div>
+              <% end %>              
+<%= link_to delete_image_attachment_city_path(@city, image_id: img.id), 
+                      data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, 
+                      class: "btn btn-danger btn-sm position-absolute", 
+                      style: "top: -8px; right: -8px; padding: 0px 6px; border-radius: 50%; font-size: 14px; line-height: 1.4; border: 2px solid white;" do %>
+            &times;
+          <% end %>
+            <% end %>
+          </div>
+        <% end %> 
+        
+        <%= city_form.file_field :images, multiple: true, class: "form-control", accept: 'image/*', direct_upload: true %>
+        <div class="form-text">You can select multiple photos at once.</div>
+      </div>
+
+      <div class="mb-3">   
+        <%= city_form.label :video_tour, "Upload City Tour Video", class: "form-label fw-bold" %>
+        <% if @city.video_tour.attached? %>
+          <div class="mb-2">
+            <%= video_tag url_for(@city.video_tour), controls: true, class: "img-thumbnail", style: "width: 100%; max-height: 150px;" %>
+          </div>
+        <% end %>
+        <%= city_form.file_field :video_tour, class: "form-control", accept: 'video/*', direct_upload: true %>
+      </div>
+
+      <div class="d-grid gap-2 mt-4">
+        <%= city_form.submit "Update City", class: "btn btn-success" %>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+      </div>
+      
+    <% end %> 
+  </div>
+</turbo-frame>

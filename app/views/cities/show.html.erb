@@ -1,0 +1,68 @@
+<turbo-frame id="city_sidebar_frame">
+<script>
+    var myOffcanvas = document.getElementById('cityOffcanvas');
+    var bsOffcanvas = bootstrap.Offcanvas.getInstance(myOffcanvas) || new bootstrap.Offcanvas(myOffcanvas);
+    document.getElementById('sidebar_title').innerText = "Edit City: <%= @city.name %>";
+    bsOffcanvas.show();
+  </script>
+
+<turbo-frame id="city_<%= @city.id %>">
+  <div class="card shadow-sm border-0 mb-4" style="max-width: 600px;">
+    <div class="card-body p-4">
+      
+      <%# 1. City Name Div %>
+      <div class="mb-3 border-bottom pb-2">
+        <label class="text-muted small fw-bold text-uppercase">City Name</label>
+        <div class="h4 text-dark mb-0"><%= @city.name %></div>
+      </div>
+
+      <%# 2. City Country Div %>
+      <div class="mb-3 border-bottom pb-2">
+        <label class="text-muted small fw-bold text-uppercase">City Country</label>
+        <div class="h5 text-primary mb-0"><%= @city.country %></div>
+      </div>
+
+      <%# 3. Image Div %>
+      <div class="mb-4 text-center bg-light p-3 rounded">
+        <label class="text-muted small fw-bold text-uppercase d-block text-start mb-2">City View</label>
+        <%= image_tag "ahmedabad.gif", width: 250, class: "rounded border shadow-sm img-fluid" %>
+      </div>
+
+<div class="mt-3">
+  <h6 class="fw-bold">City Guide (PDF Content):</h6>
+
+  <% @city.images.each do |file| %>
+    <% if file.content_type == "application/pdf" %>
+      <div style="height: 600px; width: 100%; border: 1px solid #ccc;">
+        <object 
+          data="<%= url_for(file) %>" 
+          type="application/pdf" 
+          width="100%" 
+          height="100%">
+          <p> 
+            <%= link_to "click Here", url_for(file) %>
+          </p>
+        </object>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
+      <%# 4. Actions Div %>
+     <div class="d-flex flex-row gap-2">
+     <button type="button" class="btn btn-outline-secondary w-100 h-100" data-bs-dismiss="offcanvas">Back</button>
+<%= link_to "Edit", edit_city_path(@city, page: params[:page], q: params[:q]&.to_unsafe_h), 
+            class: "btn btn-outline-primary w-100", 
+            data: { turbo_frame: "city_sidebar_frame" } %>
+<%= button_to city_path(@city, page: params[:page]),
+            method: :delete, 
+            class: "btn btn-danger flex-fill w-120 h-100", 
+            data: { turbo_confirm: "Are you sure?" } do %>
+          Delete
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+</turbo-frame>
+</turbo-frame>

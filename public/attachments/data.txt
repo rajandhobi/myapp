@@ -1,0 +1,147 @@
+class User < ApplicationRecord
+ validates :name, :email, presence: true 
+# # before_validation  do 
+# #   if name.blank?
+# #     self.name = email
+# #   end
+# # end
+# before_validation :ensure_name_has_valude, on: :create
+# after_validation :set_location, on: [:create, :update]
+
+# private 
+# def ensure_name_has_valude
+#   if name.blank?
+#     self.name = email 
+# end 
+# end
+
+# def set_location
+#   self.location = LocationService.query
+# end
+
+
+# class User < ApplicationRecord
+
+  # validates :name, presence: true
+
+  # before_validation :titleize_name
+  # after_validation :log_errors
+
+  # private
+
+  # def titleize_name
+  #    if name.present?
+  #   self.name = name.downcase.titleize
+  #   Rails.logger.info("Name titleized: #{name}")
+  #    end
+  # end
+
+  # def log_errors
+  #   if errors.any?
+  #     Rails.logger.error("Validation failed: #{errors.full_messages.join(', ')}")
+  #   end
+  
+#   before_create :set_default_role
+#   around_create :log_creation
+#   after_create :save_email
+
+#   private
+#   def set_default_role
+#     self.name = "user"
+#     Rails.logger.info("User role set to default: user")
+#   end
+
+#   def log_creation
+#     Rails.logger.info("Creating user with email: #{email} ")
+#     yield
+#     Rails.logger.info("User creating with email: #{email}")
+#   end
+
+#   def save_email
+#     Rails.logger.info("User save email with sucess #{email}")
+# end
+
+
+# before_update :check_name_change
+# around_update :log_updating 
+# after_update :update_success
+
+
+# def check_name_change
+#   if name_change
+#     Rails.logger.info("User name  changed #{name}")
+# end
+# end
+
+# def log_updating
+#   Rails.logger.info("Update user with name")
+#  yield
+#  Rails.logger.info("Use Update with name")
+# end
+
+
+# def update_success
+#   Rails. Rails.logger.info("Use Update with sucess final  #{email}")
+# end
+
+
+ class User < ApplicationRecord
+
+  # before_destroy  :check_account_status
+  # around_destroy  :log_around_destroy
+  # after_destroy   :delete_user_cache
+  # after_commit    :send_delete_notification, on: :destroy
+  # after_rollback  :log_destroy_failure, on: :destroy
+
+  # private
+
+  # def check_account_status
+  #   puts "Before Destroy: Checking if user can be deleted..."
+
+  #   if email == "admin@gmail.com"
+  #     puts "User Destroy Blocked (Admin cannot be deleted)"
+  #     throw :abort     
+  #   end
+  # end
+
+  # def log_around_destroy
+  #   puts "Around Destroy: Before deleting user"
+  #   yield             
+  #   puts "Around Destroy: After deleting user"
+  # end
+
+  
+  # def delete_user_cache
+  #   puts "After Destroy: Cleaning user cache..."
+  # end
+
+
+  # def send_delete_notification
+  #   puts "After Commit: User deletion committed successfully!"
+  # end
+
+  # def log_destroy_failure
+  #   puts "After Rollback: Destroy failed, transaction rolled back!"
+  # end
+
+
+  # after_touch do |user|
+  #   Rails.logger.info("You have touched object")
+  # end
+
+  
+  # after_find do |user|
+  # Rails.logger.info("You have find object")
+  # end
+
+  before_save :block_is_name
+  private
+
+  def block_is_name
+    if name == "sjjjjjjjjjjjjfb"
+      Rails.logger.info("Save blocked: this name is not allowed.")
+      throw :abort   
+    end
+  end
+ end
+

@@ -1,0 +1,65 @@
+<div class="place-box">
+<h2>Search Places</h2>
+
+<%= form_with url: places_path, method: :get, local: true do %>
+
+  <%= label_tag :query, "Search Place Name" %>
+  
+  <%= text_field_tag :query, params[:query], placeholder: "Type place name" %>
+
+  <%= submit_tag "Search" %>
+
+<% end %>
+
+<h2>Basic fields</h2>
+<%= form_with url: debug_params_path, method: :post, local: true, data: { turbo: false }, authenticity_token: true do %>
+
+  <%= label_tag :name, "City" %>
+  <%= text_field_tag "place[address][][line1]"%>
+
+  <%= label_tag :name, "place" %>
+  <%= text_field_tag "place[address][][line2]" %>
+
+  <%= label_tag :pin, "place" %>
+  <%= text_field_tag "place[address][][line3]"%>
+  <%= checkbox_tag "accept" %>
+
+
+  <!-- city[name] -->
+    <label>City Name</label>
+    <input type="text" name="city[name]" />
+
+    <!-- city[place][10][name] -->
+    <label>City Places</label>
+   <input name="city[places_attributes][0][name]" value="Riverfront">
+
+    <!-- city[place][12][name] -->
+    <label>City Places </label>
+   <input name="city[places_attributes][1][name]" value="Kankaria">
+
+    <!-- checkbox example -->
+    <%= checkbox_tag "accept" %>
+
+  <%= submit_tag "Submit" %>
+<% end %>
+
+
+<h3>Results</h3>
+
+<% @places.each do |place| %>
+  <p>
+    <strong><%= place.name %></strong>  
+    (<%= place.category %>)  
+    - City: <%= place.city.name %>
+  </p>
+<% end %>
+
+
+
+<h2>Upload CSV File</h2>
+<%= form_with url: upload_places_path, multipart: true, method: :post do |form| %>
+  <p>Select CSV File:</p>
+  <%= form.file_field :csv_file %><br><br>
+  <%= form.submit "Upload CSV" %>
+<% end %>
+

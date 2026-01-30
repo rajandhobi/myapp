@@ -1,0 +1,77 @@
+<h2>Demo Form</h2>
+
+<%= form_with url: "/form_result", method: :get do |form| %>
+
+  <!-- TEXT FIELD -->
+  <p>
+    <%= form.label :username, "Enter Name:" %>
+    <%= form.text_field :username %>
+  </p>
+
+  <!-- CHECKBOXES -->
+  <h3>Select Hobbies:</h3>
+  <p>
+    <%= form.checkbox :cricket %>
+    <%= form.label :cricket, "Cricket" %>
+
+    <%= form.checkbox :music %>
+    <%= form.label :music, "Music" %>
+
+    <%= form.checkbox :travel %>
+    <%= form.label :travel, "Travel" %>
+  </p>
+    <p>
+      <%= form.label :price, "Price:" %><br>
+  <%= form.number_field :price, in: 1.0..20.0, step: 0.5 %>
+  <br><br>
+
+  <%= form.range_field :discount, in: 1..100 %>
+
+  </p>
+
+  <!-- RADIO BUTTONS -->
+  
+  <h3>Gender:</h3>
+  <p>
+    <%= form.radio_button :gender, "male" %>
+    <%= form.label :gender_male, "Male" %>
+
+    <%= form.radio_button :gender, "female" %>
+    <%= form.label :gender_female, "Female" %>
+  </p>
+
+  <!-- OTHER FIELDS -->
+  <p>
+    <%= form.label :email, "Email:" %>
+    <%= form.email_field :email %>
+  </p>
+
+  <p>
+    <%= form.label :password, "Password:" %>
+    <%= form.password_field :password %>
+  </p>
+
+  <p>
+    <%= form.label :born_on, "Birth Date:" %>
+    <%= form.date_field :born_on %>
+  </p>
+  <p>
+    <%= form.label :favorite_color, "Favorite Color:" %>
+    <%= form.color_field :favorite_color %>
+    <%= form.select :city, ["Berlin", "Chicago", "Madrid"] %>
+    <%= form.select :city, [["Belin", "sdds"], ["ass", "assasa"], ["asas", "asasa"]] %>
+    <%= form.select :city,
+      {
+        "Europe" => [ ["Berlin", "BE"], ["Madrid", "MD"] ],
+        "North America" => [ ["Chicago", "CHI"] ],
+      },
+      selected: "CHI" %> 
+  </p>
+
+  
+  <p><%= form.collection_select :city_id, City.order(:name), :id, :name %></p>
+
+
+  <%= form.submit "Submit Form" %>
+
+<% end %>

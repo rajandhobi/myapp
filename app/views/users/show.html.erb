@@ -1,0 +1,6 @@
+<h1>User Created Successfully!</h1>
+<p><strong>Name:</strong> <%= @user.name %></p>
+<p><strong>Email:</strong> <%= @user.email %></p>
+<%= link_to "Send Report Email", send_report_user_path(@user), class: "btn btn-primary" %>
+
+  

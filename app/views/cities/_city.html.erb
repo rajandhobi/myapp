@@ -1,0 +1,33 @@
+<div class="city-box">
+
+  <h2><%= city.name %> -- <%= city.country %></h2>
+
+  <%= render partial: "places/place",
+             locals: { places: city.places, show_count: true } %>
+  <hr>
+  
+<% if city.places.any? %>
+  <%= render partial: "places/place_adv",
+             locals: { place: city.places.first } %>
+<% else %>
+  <p>No places available.</p>
+<% end %>
+
+  <hr>
+
+  <% city.places.each do |place| %>
+    <%= render partial: "places/place1",  
+               locals: { place: place, show_count: true } %>
+  <% end %>
+  <hr>
+
+  <% city.places.each do |place| %>
+    <%= render partial: "places/place1",
+               locals: { place: place },
+               layout: "places/wrapper" %>
+  <% end %>
+  
+
+  <p>Index: <%= city_counter %></p>
+
+</div>

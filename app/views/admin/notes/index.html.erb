@@ -1,0 +1,12 @@
+<h2> All Notes </h2>
+
+<% @notes.each do |note| %>
+<p>
+  <%= link_to note.title,  note_path(note) %><br>
+  <%= link_to note.content, note_path(note) %>
+     <p> <%= button_to "Delete",note_path(note),
+      method: :delete, class: "btn btn-third",
+      data: {confirm: "Are you sure for delete the data"} %></p>
+  </p>  
+  <% end %> 
+      <p>Ids: <%= params[:ids].inspect %></p>

@@ -1,0 +1,12 @@
+<h1>Notes#show</h1>
+<p>Find me in app/views/notes/show.html.erb</p>
+
+<p>Note Data:</p>
+
+<h2><%= @notes.title %></h2>
+<h2><%= @notes.content %></h2>
+
+<p>Composite ID: <%= params[:id] %></p>
+<p>Extracted IDs: <%= params.extract_value(:id).inspect %></p>
+
+

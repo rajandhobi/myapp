@@ -1,0 +1,18 @@
+<div class="place-box">
+  
+  <h3>Places List (from _place.html.erb)</h3>
+
+  <% if local_assigns[:show_count] %>
+    <p> Total Places: **<%= places.count %>** </p>
+  <% end %>
+
+  <% places.each do |place| %>
+    <h2><%= place.name %> --- (<%= place.category %>)</h2>
+  <% end %>
+
+  <% places.each do |place| %>
+    <h3><%= place.name %></h3>
+    <p>Category: <%= place.category %></p>
+  <% end %>
+  
+</div>

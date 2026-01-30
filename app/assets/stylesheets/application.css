@@ -1,0 +1,126 @@
+/*
+ * This is a manifest file that'll be compiled into application.css.
+ *
+ * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
+ * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
+ * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
+ * depending on specificity.
+ *
+ * Consider organizing styles into separate files for maintainability.
+ */
+/* app/assets/stylesheets/application.css */
+/* app/assets/stylesheets/application.css  */
+
+
+body {
+  background-color: hsl(164, 33%, 80%)
+}
+
+.btn {  
+  padding: 8px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  display: inline-block;
+  
+}
+
+.btn-primary {
+  background: blue;
+  color: white;
+}
+
+.btn-third-primary {
+ color: rgb(235, 26, 26)
+}
+
+.btn-secondary {
+  background: gray;
+  color: rgb(254, 246, 246);
+}
+
+.toast-card {
+  padding: 15px 25px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  color: rgb(23, 15, 15);
+  font-weight: bold;
+  box-shadow: 0 4px 6px #0000001a;
+  min-width: 250px;
+  transition: opacity 0.6s ease;
+  animation: slideIn 0.5s ease-out;
+}
+
+.success, .notice { background-color: hsl(145, 63%, 49%); }
+
+.alert, .error { background-color: #e3d8d7; }
+
+
+
+html[data-turbo-visit-direction="forward"]::view-transition-new(root) {
+  animation: fade-in 0.5s ease-in;
+} 
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+
+.turbo-progress-bar {
+  height: 4 px;
+  background-color: #2ecc71;
+  box-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
+}
+
+
+
+
+
+/* // ---Direct_upload part CSS----- */
+
+.direct-upload {
+  display: inline-block;
+  position: relative;
+  padding: 2px 4px;
+  margin: 0 3px 3px 0;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+  font-size: 11px;
+  line-height: 13px;
+}
+
+.direct-upload--pending {
+  opacity: 0.6;
+}
+
+.direct-upload__progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  opacity: 0.2;
+  background: #0076ff;
+  transition: width 120ms ease-out, opacity 60ms 60ms ease-in;
+  transform: translate3d(0, 0, 0);
+}
+
+.direct-upload--complete .direct-upload__progress {
+  opacity: 0.4;
+}
+
+.direct-upload--error {
+  border-color: red;
+}
+
+input[type=file][data-direct-upload-url][disabled] {
+  display: none;
+}
+
+/* .turbo-progress-bar {
+  visibility: hidden;
+} */
+

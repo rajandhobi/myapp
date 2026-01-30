@@ -1,0 +1,4 @@
+Hello <%= @user.name %>
+Your monthly account report is ready.
+Attachments are included.
+

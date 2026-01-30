@@ -1,0 +1,63 @@
+<%# new.html.erb %>
+<turbo-frame id="city_sidebar_frame">  
+  <script>
+    var myOffcanvas = document.getElementById('cityOffcanvas');
+    var bsOffcanvas = bootstrap.Offcanvas.getInstance(myOffcanvas) || new bootstrap.Offcanvas(myOffcanvas);
+    document.getElementById('sidebar_title').innerText = "Create New City";
+    bsOffcanvas.show();
+  </script>
+    
+  <div class="p-2">
+
+    <%= form_with model: @city, data: {turbo_frame: "_top" } do |city_form| %>
+      <div class="mb-3">
+        <%= city_form.label :name, "City Name", class: "form-label fw-bold" %>
+        <%= city_form.text_field :name, class: "form-control", placeholder: "Enter city name", required: true, oninput: "this.value = this.value.replace(/[0-9]/g, '')" %>
+      </div>
+
+      <div class="mb-3">
+        <%= city_form.label :country, "City Country", class: "form-label fw-bold" %>
+        <%= city_form.text_field :country, class: "form-control", placeholder: "Enter country", required: true, oninput: "this.value = this.value.replace(/[0-9]/g, '')" %>
+      </div>
+
+      <div class="mb-3">
+     <%= city_form.label :logo, "Upload City Image", class: "form-label" %>
+     <%= city_form.file_field :logo, direct_upload: true, class: "form-control" %>
+     </div>
+     
+
+     <%# mutiple images uploaded  %>
+
+  <div class="mb-3">
+  <%= city_form.label :images, "Upload City Gallery (Multiple)", class: "form-label fw-bold" %>
+  <%= city_form.file_field :images, multiple: true, direct_upload: true, class: "form-control", accept: 'image/*' %>
+  <div class="form-text">You can select multiple photos at once.</div>
+</div>
+     
+     <div class="mb-3">
+  <%= city_form.label :city_video, "Upload City Tour Video", class: "form-label fw-bold" %>
+  <%= city_form.file_field :video_tour, class: "form-control",  direct_upload: true, accept: 'video/*' %>
+</div>
+
+      <h6 >Places Inside City</h6>
+      
+      <div class="places-container p-2 border rounded bg-light mb-4">
+        <%= city_form.fields_for :places do |place_form| %>
+          <div class="row g-2 mb-2">
+            <div class="col-7">
+              <%= place_form.text_field :name, placeholder: "Place Name", class: "form-control form-control-sm", required: true, oninput: "this.value = this.value.replace(/[0-9]/g, '')" %>
+            </div>
+            <div class="col-5">
+              <%= place_form.text_field :category, placeholder: "Category", class: "form-control form-control-sm", required: true, oninput: "this.value = this.value.replace(/[0-9]/g, '')" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="d-grid gap-2">
+        <%= city_form.submit "Save City Details", class: "btn btn-success" %>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+      </div>
+    <% end %>
+  </div>
+</turbo-frame>

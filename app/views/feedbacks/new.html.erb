@@ -1,0 +1,31 @@
+<h1>Feedback Form</h1>
+
+<%= form_with model: @feedback do |f| %>
+
+  <div>
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+    <% if @feedback.errors[:name].any? %>
+      <small style="color:red;"><%= @feedback.errors[:name].first %></small>
+    <% end %>
+  </div>  
+
+  <div>
+    <%= f.label :rating %><br>
+    <%= f.number_field :rating %>
+    <% if @feedback.errors[:rating].any? %>
+      <small style="color:red;"><%= @feedback.errors[:rating].first %></small>
+    <% end %>
+  </div>
+
+  <div>
+    <%= f.label :comment %><br>
+    <%= f.text_area :comment %>
+    <% if @feedback.errors[:comment].any? %>
+      <small style="color:red;"><%= @feedback.errors[:comment].first %></small>
+    <% end %>
+  </div>
+
+  <%= f.submit "Submit Feedback" %>
+<% end %>
+

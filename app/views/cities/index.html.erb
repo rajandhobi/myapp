@@ -1,0 +1,198 @@
+<h1>Cities Dashboard</h1>
+
+<div id="flash_messages"></div>
+
+<%= turbo_stream_from "cities" %>
+
+<%# <turbo-frame id="new_city_frame"> %>
+  <div class="mb-3">
+<%= link_to "Add New City", new_city_path, 
+      class: "btn btn-sm btn-info", 
+data: { turbo_frame: "city_sidebar_frame" } %>  
+     </div>
+<%# </turbo-frame> %>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="cityOffcanvas">
+  <div class="offcanvas-header border-bottom bg-light">
+    <h5 class="offcanvas-title" id="sidebar_title">City Details</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body">
+    <turbo-frame id="city_sidebar_frame">
+       <div class="text-center p-5">Loading...</div>
+    </turbo-frame>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-bordered shadow-xs" style="font-size: 0.95rem; width: 75%; margin-left: 10px;">
+    <thead class="table-dark">
+      <tr style="font-size: 1rem;">
+        <th style="width: 30%;">City Info & Helpers</th>
+        <th style="width: 25%;">Country Details</th>
+        <th style="width: 30%;">Media</th>
+        <th style="width: 15%;">Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @cities.each do |city| %>
+     <tr id="city_row_<%= city.id %>">
+          <td>
+        <turbo-frame id="city_<%= city.id %>" tag="tr" class="align-middle">    
+            <h5 class="mb-1 city-name-display" style="font-size: 1.5rem;"><%= short_name(city) %></h5>
+            <small class="text-muted" style="font-size: 1.1rem;">
+              <%= created_ago(city) %><br>
+              <%= time_since_created(city) %> since creation
+            </small>
+            <pre class="mt-2 p-2 small border bg-light text-dark"><%= wrapped_name(city) %></pre>
+          </td>
+
+          <td>
+            <strong class= "city-country-display" style="font-size: 1.3rem;"><%= city.country %></strong><br>
+            <div class="mt-2">
+              <small class="text-muted d-block">📧 <%= mail_to_city_info(city) %></small>
+              <small class="text-muted d-block">🛡️ Sanitized: <%= sanitize_include_tags_only(city) %></small>
+            </div>
+          </td>
+          
+<td class="city-image-column text-center align-middle" style="width: 250px;">
+
+  <div class="mb-3">
+    <% if city.logo.attached? %>
+      <%= image_tag download_logo_city_path(city), class: "img-thumbnail shadow-sm mb-2 city-logo-img" %>
+      <br>
+      <%= link_to "Download Logo", download_logo_city_path(city), class: "text-decoration-none small text-primary", download: true %>
+    <% end %>
+  </div>
+
+  <%# 9.3: Previewing Files & 9: Representations - Gallery %>
+  <div class="mt-3 border-top pt-2">
+    <p class="small fw-bold mb-1">City Gallery:</p>
+    <div class="d-flex flex-wrap gap-1 justify-content-center city-gallery-container">
+      <% if city.images.attached? %>
+        <% city.images.each do |img| %>
+          <div class="position-relative" id="image_container_<%= img.id %>">
+            <% if img.representable? %>
+              <%= link_to url_for(img), target: "_blank" do %>
+                <%= image_tag img.representation(resize_to_limit: [100, 100]), 
+                    class: "rounded border shadow-sm",
+                    style: "width: 60px; height: 60px; object-fit: cover;" %>
+              <% end %>
+            <% else %>
+              <%= link_to "File", rails_blob_path(img, disposition: "attachment"), class: "btn btn-xs btn-light border" %>
+            <% end %>
+          </div>
+        <% end %>
+      <% else %>
+        <small class="text-muted">No gallery images</small>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="mb-3 border-top pt-2">
+    <div class="city-video-container">
+    <% if city.video_tour.attached? %>
+      <% if city.video_tour.analyzed? %>
+        <% duration = city.video_tour.metadata[:duration] %>
+        <% if duration.present? %>
+          <span class="badge bg-dark mb-1">Duration: <%= duration.to_f.round(2) %>s</span>
+        <% end %>
+      <% end %>      
+      <p class="small fw-bold mb-1 text-primary">Video Preview:</p>
+
+     <% if city.video_tour.previewable? %>
+    <%= image_tag city.video_tour.preview(resize_to_limit: [200, 200]), 
+        class: "rounded shadow-sm mb-2", style: "width: 100%; max-width: 100px;" %>
+  <% else %>
+    <div class="alert alert-light border small py-1">Preview not available</div>
+  <% end %>
+    
+    <%= video_tag url_for(city.video_tour), controls: true, style: " max-width: 150px;", class: "rounded shadow-sm" %>
+    <% else %>
+      <small class="text-muted d-block">No video uploaded</small>
+    <% end %>
+  </div>
+  <br>
+  
+  <%= button_to 'Attach Guide', attach_kit_city_path(city), method: :patch, class: "btn btn-info btn-sm" %>
+  <div class="mt-2 border-top pt-2">
+    <%= audio_tag "ahmedabad.mp3", controls: true, class: "w-100", style: "height: 30px; max-width: 160px;" %>
+    <div class="small text-success fw-bold mt-1 city-welcome-display">
+      Welcome to <%= city.name %>!
+    </div>
+  </div>
+</td>
+
+
+         <td class="text-center">
+         <div class="d-flex flex-column gap-2 px-2">
+<%= link_to "Show", city_path(city, page: params[:page], q: params[:q]&.to_unsafe_h), class: "btn btn-sm btn-outline-secondary", data: { turbo_frame: "city_sidebar_frame" } %>
+<%= link_to "Edit", edit_city_path(city, page: params[:page], q: params[:q]&.to_unsafe_h), 
+    class: "btn btn-sm btn-outline-primary",  
+    data: { turbo_frame: "city_sidebar_frame" } %>    
+              <%= link_to "Delete", city_path(city, q: params[:q]&.to_unsafe_h), method: :delete, 
+                  data: { turbo_confirm: "Are you sure?" }, 
+                  class: "btn btn-sm btn-outline-danger w-100 delete-city-btn" %>
+            </div>
+          </td>
+        </turbo-frame>
+        <tr>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%# Sidebar Section for New form  %>
+
+<%# Pagination Section %>
+<div class="mt-4">
+  <p><strong>Paginates Data</strong></p>
+  <%= paginate @cities, left: 1, right: 6 %>
+</div>
+
+<hr class="my-5">
+
+<%# Search & Filter %>
+<div class="row">
+  <div class="col-md-6">
+    <div class="card card-body bg-light border-0 shadow-sm p-4">
+  <h5 class="mb-3">Search & Filter</h5>
+  
+  <%= search_form_for @q, url: cities_path, data: { turbo_frame: "cities_list", turbo_action: "advance" } do |f| %>
+    <div class="row g-2">
+      
+      <div class="col-md-5">
+        <%=f.select :name_cont,
+        City.select(:name).distinct.pluck(:name),
+        { include_blank: "All Cities"},
+        { class: "form-select"} %>
+      </div>
+
+      <div class="col-md-5">
+        <%= f.select :country_cont, 
+            City.select(:country).distinct.pluck(:country), 
+            { include_blank: "All Countries" }, 
+            { class: "form-select" } %>
+      </div>
+
+      <div class="col-md-2">
+        <%= f.submit "Search", class: "btn btn-primary w-100" %>
+      </div>
+
+    </div>
+  <% end %>
+
+  <div class="mt-3 small">
+    <%= link_to "Clear Filters", cities_path, class: "text-decoration-none text-danger me-3" %>
+    <%= sort_link(@q, :name, "Sort by Name", class: "me-3 text-decoration-none") %>
+    <%= sort_link(@q, :created_at, "Newest First", class: "text-decoration-none") %>
+  </div>
+</div>
+  </div>
+</div>
+
+<div class="mt-4">
+  <%= link_to "📥 Download CSV", cities_path(format: :csv), class: "btn btn-link btn-sm text-decoration-none" %>
+</div>
