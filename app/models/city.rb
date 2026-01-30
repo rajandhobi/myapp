@@ -10,6 +10,9 @@ end
 
 has_many_attached :images do |attachable|
   attachable.variant :thumb, resize_to_limit: [200, 200]
+end 
+def pincode 
+  "#{country}-#{id.to_s.rjust(5, '0')}"
 end
 
 include Entryable
